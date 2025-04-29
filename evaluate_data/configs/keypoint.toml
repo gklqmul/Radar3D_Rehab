@@ -1,0 +1,8 @@
+seed = 42
+train_split = 0.8
+val_split = 0.1
+test_split = 0.1
+stacks = 22
+step = 1
+zero_padding = 'zero'
+max_points= 512

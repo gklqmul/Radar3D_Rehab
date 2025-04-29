@@ -1,0 +1,281 @@
+# Radar3D-Rehab
+
+## A Spatial Millimetre-Wave Radar Point Cloud Dataset for Health Applications
+
+Welcome to the official source code repository of **Radar3D-Rehab**.  
+This project provides tools for **data processing**, **dataset preparation**, **model training**, and **evaluation** for health-related applications using millimetre-wave radar point clouds.
+
+---
+
+## Table of Contents
+
+- [Dataset Download and Preparation](#dataset-download-and-preparation)
+- [Data Processing](#data-processing)
+- [Dataset Structure](#dataset-structure)
+- [Model Training and Evaluation](#model-training-and-evaluation)
+- [Commands](#commands)
+- [Hyperparameters](#hyperparameters)
+- [Models](#models)
+- [Tasks](#tasks)
+- [Citation](#citation)
+
+---
+
+## Dataset Download and Preparation
+
+### Clone the repository
+
+```bash
+git clone https://github.com/yizzfz/MiliPoint.git
+cd MiliPoint
+```
+
+### Download the dataset
+
+Download the processed dataset (approximately 900MB) from:
+
+https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/YKS954
+
+Unzip it in the same path as the cloned repository.
+
+### Data Processing
+
+Navigate to the process_data/ directory:
+
+```bash
+
+cd process_data
+If you have not recorded .mkv files
+Record Kinect video and timestamp files:
+```
+
+```bash
+python utils/recordMKV.py
+```
+
+This will generate:
+
+A .mkv video file
+
+A timestamps.npy file (used for data alignment)
+
+If you have already recorded .mkv files
+Proceed by running:
+
+```bash
+python main.py
+```
+
+Data Processing Pipeline
+The five main steps are:
+
+Extract skeleton data from .mkv files (grouped by participant).
+
+Segment skeleton sequences into actions by identifying the beginning and ending frame IDs.
+
+Align radar data with skeleton frame IDs based on timestamps.
+
+Split the Kinect and radar data into action-specific segments.
+
+Transform skeleton points to radar coordinates.
+
+Note:
+The raw radar point cloud generation process (signal receiving, initial point cloud creation) is not included. Different radar devices have different mechanisms.
+Before alignment, ensure you have radar point clouds ready.
+
+### Dataset Structure
+
+After completing the processing, your dataset will look like:
+
+/dataset/
+├── env1/ # bright environment
+│ └── subjects/
+│ ├── subject01/
+│ │ ├── aligned/
+│ │ │ ├── action01/
+│ │ │ │ ├── aligned_radar_segment01.h5
+│ │ │ │ └── aligned_skeleton_segment01.npy
+│ │ │ ├── action02/
+│ │ │ └── ...
+│ │ └── original/
+│ │ ├── 1/
+│ │ ├── 2/
+│ │ └── ...
+│ └── ...
+├── env2/ # low-light environment
+│ └── subjects/
+│ └── subject01/
+│ └── subject02/
+│ └── ...
+Each subject contains 21 kinds of actions.
+
+## Model Training and Evaluation
+
+Navigate to the evaluate_data/ directory:
+
+```bash
+cd evaluate_data
+```
+
+Install required packages:
+
+```bash
+bash install_packages.sh
+```
+
+Commands
+Command Format
+
+```bash
+./mm <train/test> <task> <model> <args>
+```
+
+Note: On Windows, use python mm instead of ./mm.
+
+Example: Training
+
+```bash
+
+./mm train radar_kp dgcnn \
+  --save session_name \
+  -config ./configs/keypoint.toml \
+  -a gpu
+```
+
+Override configuration values from the command line:
+
+```bash
+./mm train radar_kp mlp \
+  --save session_name \
+  -config ./configs/keypoint.toml \
+  --dataset_stacks 5
+```
+
+Example: Testing
+
+```bash
+./mm test radar_kp dgcnn \
+  --load session_name \
+  -config ./configs/keypoint.toml
+```
+
+### Hyperparameters
+
+--dataset_stacks / stacks: Number of frames stacked together with the current frame.
+
+--dataset_zero_padding / zero_padding: Padding strategy:
+
+data_point — pad each frame individually.
+
+stack — pad the entire stack at once.
+
+Other hyperparameters are available in the .toml configuration files inside configs/.
+
+### Models
+
+Available models:
+
+DGCNN
+
+PointNet++
+
+PointTransformer
+
+Their performances are reported in the accompanying paper.
+
+Tasks
+radar_kp - Keypoint Estimation
+Input (X): Radar point cloud (n, 3)
+
+Output (Y): 32 skeleton keypoints
+
+Train
+
+```bash
+python mm train radar_kp dgcnn \
+  --save radar_dgcnn \
+  -config ./configs/keypoint.toml \
+  -w 0 \
+  -a gpu \
+  -m 300 \
+  -n -1
+```
+
+Test
+
+```bash
+python mm test radar_kp dgcnn \
+  --load radar_dgcnn \
+  -config ./configs/keypoint.toml \
+  -w 0 \
+  -a gpu
+```
+
+radar_iden - Subject Identification
+Input (X): Radar point cloud (n, 3)
+
+Output (Y): Subject ID (1–26)
+
+Train
+
+```bash
+
+python mm train radar_iden dgcnn \
+  --save radar_iden_dgcnn \
+  -config ./configs/identity.toml \
+  -w 0 \
+  -a gpu \
+  -m 300 \
+  -n -1
+```
+
+Test
+
+```bash
+python mm test radar_iden dgcnn \
+  --load radar_iden_dgcnn \
+  -config ./configs/identity.toml \
+  -w 0 \
+  -a gpu
+```
+
+radar_act - Action Classification
+Input (X): Radar point cloud (n, 3)
+
+Output (Y): Action ID (1–21)
+
+Train
+
+```bash
+python mm train radar_act dgcnn \
+  --save radar_act_dgcnn \
+  -config ./configs/action.toml \
+  -w 0 \
+  -a gpu \
+  -m 300 \
+  -n -1
+```
+
+Test
+
+```bash
+python mm test radar_act dgcnn \
+  --load radar_act_dgcnn \
+  -config ./configs/action.toml \
+  -w 0 \
+  -a gpu
+```
+
+### Citation
+
+If you find this project useful, please consider citing:
+
+```bibtex
+
+@inproceedings{Radar3D-Rehab,
+  title={Radar3D-Rehab: A Spatial Millimetre-Wave Radar Point Cloud Dataset for Health Applications},
+  author={Author Names},
+  booktitle={Conference Name},
+  year={2025}
+}
+```
