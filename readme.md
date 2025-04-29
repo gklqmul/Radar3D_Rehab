@@ -87,6 +87,7 @@ Before alignment, ensure you have radar point clouds ready.
 
 After completing the processing, your dataset will look like:
 
+```bash
 /dataset/
 ├── env1/ # bright environment
 │ └── subjects/
@@ -107,6 +108,8 @@ After completing the processing, your dataset will look like:
 │ └── subject01/
 │ └── subject02/
 │ └── ...
+```
+
 Each subject contains 21 kinds of actions.
 
 ## Model Training and Evaluation
