@@ -7,6 +7,7 @@ from torch.utils.data import Dataset
 from sklearn.model_selection import train_test_split
 
 
+
 class RadarKeypoint(Dataset):
   
     seed = 42              
@@ -144,7 +145,7 @@ class RadarKeypoint(Dataset):
             return np.zeros((1, 8))
 
         el = radar_data[:, 0]       # el
-        z = radar_data[:, 1]        # Z
+        z = radar_data[:, 1]        # Z height
         az = radar_data[:, 2]       # az
         doppler = radar_data[:, 3]  # doppler
         rng = radar_data[:, 4]      # rng

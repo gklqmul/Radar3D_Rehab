@@ -13,7 +13,6 @@ This project provides tools for **data processing**, **dataset preparation**, **
 - [Data Processing](#data-processing)
 - [Dataset Structure](#dataset-structure)
 - [Model Training and Evaluation](#model-training-and-evaluation)
-- [Commands](#commands)
 - [Hyperparameters](#hyperparameters)
 - [Models](#models)
 - [Tasks](#tasks)
@@ -21,13 +20,22 @@ This project provides tools for **data processing**, **dataset preparation**, **
 
 ---
 
+## Acknowledgements
+
+Many thanks to the following open-source projects. We learned a lot from them and built upon their work:
+
+- [MiliPoint](https://github.com/yizzfz/MiliPoint) - For model building and framework
+- [pyKinectAzure](https://github.com/ibaiGorordo/pyKinectAzure/tree/master) - For their excellent Kinect Azure SDK wrapper and examples
+
+We sincerely appreciate the contributions of these projects to the open-source community.
+
 ## Dataset Download and Preparation
 
 ### Clone the repository
 
 ```bash
-git clone https://github.com/yizzfz/MiliPoint.git
-cd MiliPoint
+git clone https://github.com/gklqmul/Radar3D_Rehab.git
+cd Radar3D_Rehab
 ```
 
 ### Download the dataset
@@ -45,9 +53,10 @@ Navigate to the process_data/ directory:
 ```bash
 
 cd process_data
+```
+
 If you have not recorded .mkv files
 Record Kinect video and timestamp files:
-```
 
 ```bash
 python utils/recordMKV.py
@@ -66,7 +75,8 @@ Proceed by running:
 python main.py
 ```
 
-Data Processing Pipeline
+#### Data Processing Pipeline
+
 The five main steps are:
 
 Extract skeleton data from .mkv files (grouped by participant).
@@ -83,7 +93,7 @@ Note:
 The raw radar point cloud generation process (signal receiving, initial point cloud creation) is not included. Different radar devices have different mechanisms.
 Before alignment, ensure you have radar point clouds ready.
 
-### Dataset Structure
+#### Dataset Structure
 
 After completing the processing, your dataset will look like:
 
@@ -91,14 +101,14 @@ After completing the processing, your dataset will look like:
 /dataset/
 ├── env1/ # bright environment
 │ └── subjects/
-│ ├── subject01/
-│ │ ├── aligned/
+│ ├── subject01/ # participant number
+│ │ ├── aligned/ # processed data for models
 │ │ │ ├── action01/
-│ │ │ │ ├── aligned_radar_segment01.h5
-│ │ │ │ └── aligned_skeleton_segment01.npy
+│ │ │ │ ├── aligned_radar_segment01.h5  # radar point cloud
+│ │ │ │ └── aligned_skeleton_segment01.npy  # skeleton points from Azure Kinect
 │ │ │ ├── action02/
 │ │ │ └── ...
-│ │ └── original/
+│ │ └── original/ #
 │ │ ├── 1/
 │ │ ├── 2/
 │ │ └── ...

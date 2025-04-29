@@ -1,9 +1,3 @@
-# get skeleton from mkv file
-# split skeleton into different motions find timestamps
-# align radar data with skeleton data based on timestamps
-# split kinect and radar data into segments
-# transform each to radar coordinate
-
 
 from class_files.data_aligner import DataAligner
 from utils.processAllMKV import process_all_mkv
@@ -15,7 +9,6 @@ from utils.reformatRadardata import convert_mat_to_hdf5
 if __name__ == "__main__":
 
     for participant_num in range(1, 27):
-        # transform to two digit string
         currentParticipant = f"{participant_num:02d}"
         for currentEnv in ["env1", "env2"]:
             mkv_folder = "D:/kinect/data{currentParticipant}/".format(currentParticipant=currentParticipant)
@@ -26,7 +19,7 @@ if __name__ == "__main__":
             else:
                 process_all_mkv(mkv_flies, time_files,subjectNum=f"subject{currentParticipant}")
 
-            skeletonpointfolder = f"dataset/{currentEnv}/subjects/subject{currentParticipant}/origal"
+            skeletonpointfolder = f"dataset/{currentEnv}/subjects/subject{currentParticipant}/original"
             # # Get all `.npy` files to process
             skeleton_files = find_files_fromsubfolder(skeletonpointfolder, "body_skeleton.npy")
             if not skeleton_files:
@@ -39,14 +32,14 @@ if __name__ == "__main__":
 
     # before aligning data, make sure action_segments.txt has correct timestamps split
     # Data alignment and segmentation
-    for participant_num in range(1, 5):
-        # transform to two digit string
+    for participant_num in range(1, 27):
+      
         currentParticipant = f"{participant_num:02d}"
         for currentEnv in ["env1", "env2"]:
-            skeletonpointfolder = f"dataset/{currentEnv}/subjects/subject{currentParticipant}/origal"
+            skeletonpointfolder = f"dataset/{currentEnv}/subjects/subject{currentParticipant}/original"
             # Get all `.npy` files to process
             skeleton_files = find_files_fromsubfolder(skeletonpointfolder, "body_skeleton.npy")
-            radar_file_path = find_files(f"C:/PHD/Matlab/Radar/matlab_radar/data{currentParticipant}/pc/{currentEnv}", ".mat")
+            radar_file_path = find_files(f"YOUR RADAR DATA PATH", ".mat") #find all .mat files for same participant
             if not radar_file_path or not skeleton_files:
                 print("No valid `.mat` or `action_segments.txt` files found!")
             else:
@@ -55,7 +48,7 @@ if __name__ == "__main__":
                     aligner.align_and_segment_data()
                 print(f"Data alignment and segmentation complete for {len(skeleton_files)} files.")
             print("data align done!")
-            radar_files = get_aligned_mat_files(f"dataset/{currentEnv}/subjects/subject{currentParticipant}/origal")
+            radar_files = get_aligned_mat_files(f"dataset/{currentEnv}/subjects/subject{currentParticipant}/original")
             convert_mat_to_hdf5(radar_files)
             base_path = f"dataset/{currentEnv}/subjects/subject{currentParticipant}"
             move_files_to_aligned(base_path)  # base_path = "dataset\\env1\\subjects\\subject05"
