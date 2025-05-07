@@ -1,13 +1,40 @@
 from setuptools import setup, find_packages
 
-with open("requirements.txt") as f:
-    required_packages = f.read().splitlines()
-
 setup(
     name="Radar3D-Rehab", 
     version="0.1.0",
     packages=find_packages(),
-    install_requires=required_packages,
+    install_requires=[
+        'numpy==1.22.4',  
+        'scipy==1.8.1',   
+        'torch==2.0.0',
+        'seaborn',
+        'torch_geometric==2.2.0',
+        'torch-sparse==0.6.16',
+        'torch-scatter==2.1.0',
+        'pytorch_lightning==1.9.3',
+        'optuna',
+        'opencv-python',
+        'toml',
+        'scikit-learn==1.0.2',
+        'pickleshare==0.7.5',
+        'ninja==1.10.2.3',
+        'gdown',
+        'easydict==1.9',
+        'PyYAML==6.0',
+        'protobuf == 3.19.4',
+        'tensorboard == 2.8.0',
+        'termcolor == 1.1.0',
+        'tqdm == 4.62.3',
+        'multimethod == 1.7',
+        'h5py == 3.6.0',
+        'matplotlib == 3.5.1',
+        'wandb',
+        'pyvista',
+        'setuptools == 59.5.0',
+        'Cython == 0.29.28',
+        'pandas',
+        'deepspeed',],
     author="Kailu Guo",
     long_description="README.md",
     classifiers=[

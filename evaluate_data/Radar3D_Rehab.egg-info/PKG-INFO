@@ -1,0 +1,46 @@
+Metadata-Version: 2.4
+Name: Radar3D-Rehab
+Version: 0.1.0
+Author: Kailu Guo
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Requires-Dist: numpy==1.22.4
+Requires-Dist: scipy==1.8.1
+Requires-Dist: torch
+Requires-Dist: seaborn
+Requires-Dist: torch_geometric==2.2.0
+Requires-Dist: torch-sparse
+Requires-Dist: torch-scatter
+Requires-Dist: pytorch_lightning==1.9.3
+Requires-Dist: optuna
+Requires-Dist: opencv-python
+Requires-Dist: toml
+Requires-Dist: scikit-learn==1.0.2
+Requires-Dist: pickleshare==0.7.5
+Requires-Dist: ninja==1.10.2.3
+Requires-Dist: gdown
+Requires-Dist: easydict==1.9
+Requires-Dist: PyYAML==6.0
+Requires-Dist: protobuf==3.19.4
+Requires-Dist: tensorboard==2.8.0
+Requires-Dist: termcolor==1.1.0
+Requires-Dist: tqdm==4.62.3
+Requires-Dist: h5py==3.6.0
+Requires-Dist: multimethod==1.7
+Requires-Dist: h5py==3.6.0
+Requires-Dist: matplotlib==3.5.1
+Requires-Dist: wandb
+Requires-Dist: pyvista
+Requires-Dist: setuptools==59.5.0
+Requires-Dist: Cython==0.29.28
+Requires-Dist: pandas
+Requires-Dist: deepspeed
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: requires-dist
+Dynamic: requires-python
+
+README.md
