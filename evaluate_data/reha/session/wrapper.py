@@ -57,14 +57,7 @@ class ModelWrapper(pl.LightningModule):
         self.log_dict(
             {"val_loss": loss, f'val_{self.metric_name}': metric},
             on_step=False, on_epoch=True, prog_bar=True, logger=True, sync_dist=True)
-        self.val_losses.append(loss)
-
-        # log per-joint error if keypoint task
-        if self.num_classes is None:
-            per_joint_error = per_joint_localization_error(y_hat, y)
-            for name, err in zip(JOINT_NAMES, per_joint_error):
-                self.log(f"val_mle_{name}", err, on_epoch=True, prog_bar=False, logger=True)
-                
+        self.val_losses.append(loss)   
         return {"val_loss": loss}
 
     def test_step(self, batch, batch_idx):
@@ -121,31 +114,10 @@ class ModelWrapper(pl.LightningModule):
                 self.best_val_loss = val_loss
             self.val_losses = []
 
-
 def mean_localization_error(x, y):
     dist = (x-y).pow(2).sum(-1).sqrt().mean()
     return dist
 
-def per_joint_localization_error(x, y):
-    """
-    Computes average error for each joint across a batch.
-    Args:
-        x (torch.Tensor): predicted keypoints, shape (B, J, D)
-        y (torch.Tensor): ground truth keypoints, shape (B, J, D)
-    Returns:
-        torch.Tensor: average Euclidean distance per joint, shape (J,)
-    """
-    dists = (x - y).pow(2).sum(-1).sqrt()  # (B, J)
-    return dists.mean(dim=0)  # (J,)
-
-
 def acc(x, y):
     acc = (torch.argmax(x, axis=1) == y).float().sum()/x.shape[0]
     return acc
-
-JOINT_NAMES = [
-    "pelvis", "spine - navel", "spine - chest", "neck", "left clavicle", "left shoulder", "left elbow",
-    "left wrist", "left hand", "left handtip", "left thumb", "right clavicle", "right shoulder", "right elbow",
-    "right wrist", "right hand", "right handtip", "right thumb", "left hip", "left knee", "left ankle", "left foot",
-    "right hip", "right knee", "right ankle", "right foot", "head", "nose", "left eye", "left ear", "right eye", "right ear"
-]

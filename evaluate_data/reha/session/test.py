@@ -9,7 +9,7 @@ import seaborn as sns
 
 
 from .wrapper import ModelWrapper
-from .visualize import make_video
+
 
 
 def get_checkpoint_file(checkpoint_dir):
@@ -67,11 +67,10 @@ def test(model, test_loader, plt_trainer_args, load_path, visualize):
 
     compute_confusion_matrix(plt_model, test_loader, save_path=load_path)
 
-    if visualize:
-        filename = checkpoint[:-5]+'.avi'
-        logging.info(f'Saving test result in {filename}')
-        res = trainer.predict(plt_model, test_loader)
-        Y_pred = np.concatenate([r[0] for r in res])
-        Y = np.concatenate([r[1] for r in res])
-        make_video(Y_pred, Y, filename)
-        logging.info(f'Saved {filename}')
+    # if visualize:
+    #     filename = checkpoint[:-5]+'.avi'
+    #     logging.info(f'Saving test result in {filename}')
+    #     res = trainer.predict(plt_model, test_loader)
+    #     Y_pred = np.concatenate([r[0] for r in res])
+    #     Y = np.concatenate([r[1] for r in res])
+    #     logging.info(f'Saved {filename}')

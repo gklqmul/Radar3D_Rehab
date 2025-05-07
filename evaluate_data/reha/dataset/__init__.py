@@ -33,8 +33,8 @@ def get_dataset(name, batch_size, workers, dataset_config=None):
     
     if name in ['radar_act','radar_kp','radar_iden']:
             dataset = dataset_cls(
-                root_dir='./dataset', 
-                mmr_dataset_config=dataset_config)
+                root_dir='/homes/kg679/pythoncode/first/RadarDataset/dataset', 
+                dataset_config=dataset_config)
             dataset.validate_dataset()
             train_dataset = dataset.train_data
             test_dataset = dataset.test_data

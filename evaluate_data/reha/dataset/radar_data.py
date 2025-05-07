@@ -15,10 +15,13 @@ class RadarKeypoint(Dataset):
     num_keypoints = 32    
     zero_padding = 'zero' 
     zero_padding_styles = ['zero', 'repeat'] 
+    max_points = 512
+    stacks = 16
+    step = 1
 
-    def __init__(self, root_dir, mmr_dataset_config=None):
+    def __init__(self, root_dir, dataset_config=None):
         super().__init__()
-        self._parse_config(mmr_dataset_config)
+        self._parse_config(dataset_config)
         self.datapath = []          
         self.frame_level_data = []  
         self.info = {
@@ -224,9 +227,11 @@ class RadarKeypoint(Dataset):
 
 class RadarIdentity(RadarKeypoint): 
     max_points = 1024
-    def __init__(self, root_dir, mmr_dataset_config=None):
+    stacks = 16
+    step = 1
+    def __init__(self, root_dir, dataset_config=None):
     
-        super().__init__(root_dir, mmr_dataset_config)
+        super().__init__(root_dir, dataset_config)
         self.info['max_points'] = self.max_points
         self._calculate_num_classes()
         
@@ -301,9 +306,11 @@ class RadarIdentity(RadarKeypoint):
 
 
 class RadarAction(RadarKeypoint):
- 
-    def __init__(self, root_dir, mmr_dataset_config=None):
-        super().__init__(root_dir, mmr_dataset_config)
+    max_points = 2048
+    stacks = 50
+    step = 1
+    def __init__(self, root_dir, dataset_config=None):
+        super().__init__(root_dir, dataset_config)
         self.info['max_points'] = self.max_points
         self.info['step'] = self.step
         self._calculate_num_classes()

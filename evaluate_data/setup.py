@@ -1,50 +1,19 @@
 from setuptools import setup, find_packages
 
+with open("requirements.txt") as f:
+    required_packages = f.read().splitlines()
+
 setup(
-    name="milipoint",
-    version="0.1",
+    name="Radar3D-Rehab", 
+    version="0.1.0",
     packages=find_packages(),
-    install_requires=[
-        'torch',
-        'torch_geometric==2.2.0',
-        # 'torch-cluster',
-        'torch-sparse',
-        'torch-scatter',
-        'pytorch_lightning==1.9.3',
-        'optuna',
-        'opencv-python',
-        'toml',
-        'scikit-learn==1.0.2',
-        'pickleshare==0.7.5',
-        'ninja==1.10.2.3',
-        'gdown',
-        'easydict==1.9',
-        'PyYAML==6.0',
-        'protobuf == 3.19.4',
-        'tensorboard == 2.8.0',
-        'termcolor == 1.1.0',
-        'tqdm == 4.62.3',
-        'multimethod == 1.7',
-        'h5py == 3.6.0',
-        'matplotlib == 3.5.1',
-        'wandb',
-        'pyvista',
-        'setuptools == 59.5.0',
-        'Cython == 0.29.28',
-        'pandas',
-        'deepspeed',],
-    entry_points={
-        'console_scripts': [
-            'milipoint = mmrnet.cli:main',
-        ],
-    },
-    author="Han Cui; Shu Zhong; Aaron Zhao",
-    description="A python package for mmWave radar data processing using point-based GNNs",
-    long_description=open("readme.md").read(),
-    # url="https://github.com/",
+    install_requires=required_packages,
+    author="Kailu Guo",
+    long_description="README.md",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+    python_requires='>=3.6',
 )

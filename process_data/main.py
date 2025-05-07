@@ -11,7 +11,7 @@ if __name__ == "__main__":
     for participant_num in range(1, 27):
         currentParticipant = f"{participant_num:02d}"
         for currentEnv in ["env1", "env2"]:
-            mkv_folder = "D:/kinect/data{currentParticipant}/".format(currentParticipant=currentParticipant)
+            mkv_folder = "YOUR MKV SAVED PATH/".format(currentParticipant=currentParticipant)
             mkv_flies = find_files(mkv_folder, ".mkv")
             time_files = find_files(mkv_folder, ".npy") 
             if not mkv_flies:
@@ -31,6 +31,9 @@ if __name__ == "__main__":
                     process_skeleton_file(folder_path, skeleton_file)
 
     # before aligning data, make sure action_segments.txt has correct timestamps split
+    # and the radar data is in the correct format, has x,y,z,snr..., like our orginal .mat files
+
+
     # Data alignment and segmentation
     for participant_num in range(1, 27):
       
@@ -51,7 +54,7 @@ if __name__ == "__main__":
             radar_files = get_aligned_mat_files(f"dataset/{currentEnv}/subjects/subject{currentParticipant}/original")
             convert_mat_to_hdf5(radar_files)
             base_path = f"dataset/{currentEnv}/subjects/subject{currentParticipant}"
-            move_files_to_aligned(base_path)  # base_path = "dataset\\env1\\subjects\\subject05"
+            move_files_to_aligned(base_path)  
         print(f"\n============== process participant: {currentParticipant} ==============")
 
 
